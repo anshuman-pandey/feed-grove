@@ -1,18 +1,18 @@
 {
-  "checked_at": "2026-11-15T03:36:41.608553+00:00",
-  "state": "in progress; not launch-ready",
-  "tests": "29 passed: 16 ingestion/CLI tests plus 13 public-refresh, redirect, TLS, deadline, size and failure-preservation checks",
+  "checked_at": "2026-11-15T04:43:07.741843+00:00",
+  "state": "local preview; live network acceptance pending",
+  "tests": "32 Python tests pass; browser workflow passes XML ingestion, inert content, reading-state persistence, OPML preview/import/export, filters, six locales/drafts and mobile width",
   "scope": "RSS 2.0 and Atom 1.0 parsing, OPML folder roundtrip, SQLite read/star preservation, bounded XML and inert text",
   "not_tested": [
-    "Browser UI (not implemented)",
     "Successful live public feed download",
     "Actual Feedly account export",
-    "UI localization (not implemented)"
+    "Native-speaker review"
   ],
   "publication": "No public writes",
   "network_acceptance": {
     "url": "https://www.python.org/blogs/rss/",
     "result": "Blocked: hostname could not be resolved in time; no feed downloaded",
     "retry_condition": "Run refresh where direct public DNS/HTTPS works; do not bypass private-address rules"
-  }
+  },
+  "visual": "Desktop reader screenshot inspected; mobile width assertion passed"
 }

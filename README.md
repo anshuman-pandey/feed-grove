@@ -1,9 +1,27 @@
-# Feed Grove · development checkout
+# Feed Grove
 
-An open-source Feedly alternative in preparation. **Not launch-ready or published.**
-The working component currently covers local RSS 2.0 / Atom 1.0 ingestion, OPML subscription migration, literal text filters, and persistent read/starred state. The CLI can refresh public feeds; the browser interface is not implemented yet.
+![Feed Grove — a quieter place for your feeds](docs/assets/banner.svg)
 
-## Try the ingestion tools
+An open-source, local Feedly alternative for RSS/Atom reading, OPML migration, and saved articles. **Local preview; not published.**
+
+![Actual reader screenshot with synthetic article](docs/assets/reader.png)
+The working component currently covers local RSS 2.0 / Atom 1.0 ingestion, OPML subscription migration, literal text filters, and persistent read/starred state. The responsive reader includes English, German, Spanish, Japanese, Simplified Chinese and Traditional Chinese. Article content stays in its original language; technical diagnostics fall back to English.
+
+## Open your reading room
+
+Requires Python 3.10+. Extract the package, then run:
+
+```sh
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
+.venv/bin/python server.py
+```
+
+Open **http://127.0.0.1:5142**. Add a public RSS/Atom URL and choose Fetch feed, or import downloaded UTF-8 XML at that URL. Use Move your subscriptions to preview an OPML file before importing. Select a source to refresh it. Mark articles read or saved, search, and export subscriptions. Stop the server with Ctrl+C. Back up `feed-grove.sqlite3` while the server is stopped.
+
+This server binds only to loopback. It is a single-user local application, not a public multi-user service. Do not expose it through a reverse proxy. No accounts, cloud sync, AI ranking, full-article scraping or background polling.
+
+## Optional ingestion CLI
 
 Requires Python 3.10+ and the pinned dependency in `requirements.txt`.
 
@@ -27,8 +45,18 @@ Inputs are capped at 2 MiB, 2,000 entries per feed, and 500 unique subscriptions
 ## What remains before launch
 
 1. Validate public HTTP(S) refresh outside this workspace: direct DNS failed here. Automated address/redirect/TLS/size/deadline tests pass; this is not live-network acceptance.
-2. A polished responsive reader, subscription/import preview, search, unread/starred filters, and six UI languages (en/de/es/ja/zh-CN/zh-TW).
-3. End-to-end browser checks, real screenshots, visual README, install package and extracted-package acceptance.
+2. Native-speaker review and actual Feedly-export compatibility; synthetic OPML and six-locale browser checks pass.
+3. Local browser acceptance passes for import, reading state, filters, OPML export and mobile layout. Public deployment is not supported.
 4. Owner review and separate publication approval. No public repository, release, or demo is claimed.
 
 Read [scope and distribution](docs/SCOPE.md) for the intended workflow and primary-source comparison. MIT licensed.
+
+## Browser checks
+
+```sh
+npm ci
+npx playwright install chromium
+PATH="$PWD/.venv/bin:$PATH" npm run test:browser
+```
+
+Set `CHROMIUM_PATH` to an installed Chromium executable when needed. The test runner creates a disposable SQLite library and loopback server. It uses synthetic documents; no real user reading data is needed.

@@ -12,7 +12,7 @@ Our migration promise must remain equally precise: subscription URLs and folder 
 
 ## Acceptance path
 
-Export OPML from an existing reader → preview subscriptions and duplicates → import atomically → refresh public RSS/Atom → filter and mark articles → restart with state retained → export OPML and full database backup. Current CLI covers parsing/persistence and public network refresh. Automated network-policy tests pass; a real public-feed attempt failed DNS resolution in this workspace. Preview and browser portions remain unimplemented.
+Export OPML from an existing reader → preview subscriptions and duplicates → import atomically → refresh public RSS/Atom → filter and mark articles → restart with state retained → export OPML and full database backup. Current CLI covers parsing/persistence and public network refresh. Automated network-policy tests pass; a real public-feed attempt failed DNS resolution in this workspace. The loopback reader now passes synthetic browser acceptance for preview/import, filtering, read/saved persistence, six locales and OPML export. Live public refresh and actual Feedly-export acceptance remain pending.
 
 Network fetching must validate every redirect and actual connection destination, reject credentials/private and reserved IPs, cap response size and time, and avoid ambient proxies/credentials. Localhost fixture access must never become a production bypass. XML and article content are untrusted; display plain text, never fetched HTML as executable DOM.
 
