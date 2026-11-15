@@ -40,9 +40,9 @@ class Library:
     def export_opml(self):
         return export_opml(self.subscriptions())
 
-    def ingest(self, feed_url, raw):
+    def ingest(self, feed_url, raw, *, document_url=None):
         feed_url = http_url(feed_url)
-        title, entries = parse_feed(raw, feed_url)
+        title, entries = parse_feed(raw, document_url or feed_url)
         with self.db:
             self.db.execute('INSERT OR IGNORE INTO feeds VALUES (?, ?, ?)', (feed_url, title, '[]'))
             for e in entries:
@@ -52,6 +52,11 @@ class Library:
                     title=excluded.title,url=excluded.url,summary=excluded.summary,published=excluded.published''',
                     (feed_url,e.key,e.title,e.url,e.summary,e.published))
         return len(entries)
+
+    def refresh(self, feed_url):
+        from fetching import fetch_feed
+        raw, final_url = fetch_feed(feed_url)
+        return self.ingest(feed_url, raw, document_url=final_url)
 
     def entries(self, query='', unread=False, starred=False, feed_url=None):
         clauses, params = [], []

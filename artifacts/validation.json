@@ -1,13 +1,18 @@
 {
-  "checked_at": "2026-11-15T02:40:31.644626+00:00",
+  "checked_at": "2026-11-15T03:36:41.608553+00:00",
   "state": "in progress; not launch-ready",
-  "tests": "16 passed using Python unittest, including real CLI subprocess migration/ingest/mark/export",
+  "tests": "29 passed: 16 ingestion/CLI tests plus 13 public-refresh, redirect, TLS, deadline, size and failure-preservation checks",
   "scope": "RSS 2.0 and Atom 1.0 parsing, OPML folder roundtrip, SQLite read/star preservation, bounded XML and inert text",
   "not_tested": [
     "Browser UI (not implemented)",
-    "Network refresh (not implemented)",
+    "Successful live public feed download",
     "Actual Feedly account export",
     "UI localization (not implemented)"
   ],
-  "publication": "No public writes"
+  "publication": "No public writes",
+  "network_acceptance": {
+    "url": "https://www.python.org/blogs/rss/",
+    "result": "Blocked: hostname could not be resolved in time; no feed downloaded",
+    "retry_condition": "Run refresh where direct public DNS/HTTPS works; do not bypass private-address rules"
+  }
 }

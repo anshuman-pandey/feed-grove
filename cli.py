@@ -13,6 +13,7 @@ def main():
     commands = parser.add_subparsers(dest='command', required=True)
     commands.add_parser('import-opml').add_argument('file')
     commands.add_parser('export-opml')
+    commands.add_parser('refresh').add_argument('url')
     ingest = commands.add_parser('ingest')
     ingest.add_argument('url'); ingest.add_argument('file')
     listing = commands.add_parser('list')
@@ -31,6 +32,8 @@ def main():
                 raw = f.read(MAX_BYTES+1)
             count = lib.import_opml(raw) if args.command == 'import-opml' else lib.ingest(args.url,raw)
             print(json.dumps({'processed':count}))
+        elif args.command == 'refresh':
+            print(json.dumps({'processed':lib.refresh(args.url)}))
         elif args.command == 'export-opml':
             sys.stdout.buffer.write(lib.export_opml())
         elif args.command == 'list':
