@@ -2,7 +2,7 @@
 
 ![Feed Grove — a quieter place for your feeds](docs/assets/banner.svg)
 
-An open-source, local Feedly alternative for RSS/Atom reading, OPML migration, and saved articles. **Local preview; not published.**
+An open-source, local Feedly alternative for RSS/Atom reading, OPML migration, and saved articles. **Source published; local preview.**
 
 ![Actual reader screenshot with synthetic article](docs/assets/reader.png)
 The working component currently covers local RSS 2.0 / Atom 1.0 ingestion, OPML subscription migration, literal text filters, and persistent read/starred state. The responsive reader includes English, German, Spanish, Japanese, Simplified Chinese and Traditional Chinese. Article content stays in its original language; technical diagnostics fall back to English.

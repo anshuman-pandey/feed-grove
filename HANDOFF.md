@@ -1,3 +1,5 @@
+> Source publication authorized and completed. Repository creation instructions below are historical preparation notes. No hosted deployment or release was created.
+
 # Feed Grove owner handoff
 
 Local preview only. No source push, repository creation or deployment is authorized by this handoff.
