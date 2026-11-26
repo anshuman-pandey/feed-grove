@@ -42,12 +42,12 @@ Inputs are capped at 2 MiB, 2,000 entries per feed, and 500 unique subscriptions
 
 `refresh URL` downloads and ingests one public feed atomically. It allows ports 80/443, rejects non-public DNS answers and HTTPS downgrades, pins the checked connection address, verifies TLS, follows at most four redirects and caps the response at 2 MiB with a 20-second deadline (DNS gets at most five seconds per hop). Compressed responses are rejected; proxies, cookies and credentials are not used. A failed fetch or parse leaves stored entries unchanged. Use `ingest` with a local XML file if a feed requires unsupported transport.
 
-## What remains before launch
+## Validation limits
 
 1. Validate public HTTP(S) refresh outside this workspace: direct DNS failed here. Automated address/redirect/TLS/size/deadline tests pass; this is not live-network acceptance.
 2. Native-speaker review and actual Feedly-export compatibility; synthetic OPML and six-locale browser checks pass.
 3. Local browser acceptance passes for import, reading state, filters, OPML export and mobile layout. Public deployment is not supported.
-4. Owner review and separate publication approval. No public repository, release, or demo is claimed.
+4. Source is published at https://github.com/anshuman-pandey/feed-grove. This is a local application; source publication does not imply a hosted reader.
 
 Read [scope and distribution](docs/SCOPE.md) for the intended workflow and primary-source comparison. MIT licensed.
 
@@ -64,3 +64,9 @@ Set `CHROMIUM_PATH` to an installed Chromium executable when needed. The test ru
 ## Current verification
 
 See the [26 November audit checkpoint](docs/AUDIT.md) for the verified repository, release links, fresh core test result and remaining deployment/browser gates. Earlier validation records remain dated evidence.
+
+## Storage and live-feed checks
+
+If the CLI reports “Library unavailable”, check that the database parent directory exists and is writable and that the file is a valid SQLite database. Keep the original file and backups; the CLI does not repair or replace a damaged library.
+
+Run `python scripts/check_live_feed.py` to exercise the public Python.org RSS feed in a disposable library. It checks two refreshes, deduplication, saved/read state after reopening, and OPML subscription export. The same opt-in check is available under Actions → Public feed acceptance → Run workflow. It uses no existing library or credentials. A passing run covers this one feed only; it does not establish compatibility with every publisher or Feedly export.

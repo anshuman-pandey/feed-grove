@@ -1,0 +1,20 @@
+name: Public feed acceptance
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  live-feed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r requirements.txt
+      - run: python scripts/check_live_feed.py > live-feed-receipt.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: live-feed-receipt
+          path: live-feed-receipt.json
