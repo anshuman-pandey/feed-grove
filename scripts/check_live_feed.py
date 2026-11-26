@@ -4,7 +4,7 @@ from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
 from library import Library
 
-URL='https://www.python.org/blogs/rss/'
+URL='https://blog.python.org/feeds/posts/default?alt=rss'
 def main():
  with tempfile.TemporaryDirectory(prefix='feed-grove-live-') as tmp:
   path=tmp+'/library.sqlite3';lib=Library(path)
