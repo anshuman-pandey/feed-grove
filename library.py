@@ -7,19 +7,23 @@ from feeds import Subscription, parse_opml, export_opml, parse_feed, http_url, F
 class Library:
     def __init__(self, path):
         self.db = sqlite3.connect(path, timeout=5)
-        self.db.row_factory = sqlite3.Row
-        self.db.execute('PRAGMA foreign_keys = ON')
-        self.db.executescript('''
-            CREATE TABLE IF NOT EXISTS feeds (
-                url TEXT PRIMARY KEY, title TEXT NOT NULL, folder TEXT NOT NULL);
-            CREATE TABLE IF NOT EXISTS entries (
-                feed_url TEXT NOT NULL REFERENCES feeds(url) ON DELETE CASCADE,
-                key TEXT NOT NULL, title TEXT NOT NULL, url TEXT NOT NULL,
-                summary TEXT NOT NULL, published TEXT NOT NULL,
-                is_read INTEGER NOT NULL DEFAULT 0,
-                starred INTEGER NOT NULL DEFAULT 0,
-                PRIMARY KEY(feed_url, key));
-        ''')
+        try:
+            self.db.row_factory = sqlite3.Row
+            self.db.execute('PRAGMA foreign_keys = ON')
+            self.db.executescript('''
+                CREATE TABLE IF NOT EXISTS feeds (
+                    url TEXT PRIMARY KEY, title TEXT NOT NULL, folder TEXT NOT NULL);
+                CREATE TABLE IF NOT EXISTS entries (
+                    feed_url TEXT NOT NULL REFERENCES feeds(url) ON DELETE CASCADE,
+                    key TEXT NOT NULL, title TEXT NOT NULL, url TEXT NOT NULL,
+                    summary TEXT NOT NULL, published TEXT NOT NULL,
+                    is_read INTEGER NOT NULL DEFAULT 0,
+                    starred INTEGER NOT NULL DEFAULT 0,
+                    PRIMARY KEY(feed_url, key));
+            ''')
+        except BaseException:
+            self.db.close()
+            raise
 
     def close(self):
         self.db.close()

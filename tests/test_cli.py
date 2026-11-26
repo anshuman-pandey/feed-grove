@@ -33,3 +33,21 @@ class CommandWorkflow(unittest.TestCase):
             feed.write_text('<html/>')
             run('ingest','https://example.com/feed',str(feed),success=False)
             self.assertEqual(len(json.loads(run('list'))),1)
+
+    def test_missing_database_directory_has_actionable_error(self):
+        with tempfile.TemporaryDirectory() as directory:
+            db=Path(directory)/'missing'/'library.sqlite3'
+            result=subprocess.run([sys.executable,str(ROOT/'cli.py'),'--db',str(db),'list'],capture_output=True,text=True)
+            self.assertEqual(result.returncode,1)
+            self.assertIn('Check the database path',result.stderr)
+            self.assertNotIn('Traceback',result.stderr)
+            self.assertFalse(db.exists())
+
+    def test_corrupt_database_error_preserves_original_bytes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            db=Path(directory)/'library.sqlite3';original=b'not a sqlite database\n'*20;db.write_bytes(original)
+            result=subprocess.run([sys.executable,str(ROOT/'cli.py'),'--db',str(db),'list'],capture_output=True,text=True)
+            self.assertEqual(result.returncode,1)
+            self.assertIn('keep your existing database',result.stderr)
+            self.assertNotIn('Traceback',result.stderr)
+            self.assertEqual(db.read_bytes(),original)

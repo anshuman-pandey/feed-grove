@@ -2,6 +2,7 @@
 import argparse
 import json
 import sys
+import sqlite3
 from pathlib import Path
 from feeds import FeedError, MAX_BYTES
 from library import Library
@@ -25,8 +26,9 @@ def main():
     mark.add_argument('--read', choices=['yes','no'])
     mark.add_argument('--starred', choices=['yes','no'])
     args = parser.parse_args()
-    lib = Library(args.db)
+    lib = None
     try:
+        lib = Library(args.db)
         if args.command in ('import-opml','ingest'):
             with Path(args.file).open('rb') as f:
                 raw = f.read(MAX_BYTES+1)
@@ -42,11 +44,15 @@ def main():
             lib.mark(args.url,args.key,read=None if args.read is None else args.read=='yes',
                      starred=None if args.starred is None else args.starred=='yes')
             print('{"updated":true}')
+    except sqlite3.Error:
+        print('Library unavailable. Check the database path, permissions and file integrity; keep your existing database and backups.',file=sys.stderr)
+        return 1
     except (FeedError,OSError) as e:
         print(str(e),file=sys.stderr)
         return 1
     finally:
-        lib.close()
+        if lib is not None:
+            lib.close()
     return 0
 
 
