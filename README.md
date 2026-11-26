@@ -60,3 +60,7 @@ PATH="$PWD/.venv/bin:$PATH" npm run test:browser
 ```
 
 Set `CHROMIUM_PATH` to an installed Chromium executable when needed. The test runner creates a disposable SQLite library and loopback server. It uses synthetic documents; no real user reading data is needed.
+
+## Current verification
+
+See the [26 November audit checkpoint](docs/AUDIT.md) for the verified repository, release links, fresh core test result and remaining deployment/browser gates. Earlier validation records remain dated evidence.
